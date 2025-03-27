@@ -1,0 +1,26 @@
+{
+  "name": "gamesite",
+  "version": "1.0.0",
+  "description": "EasyJoy游戏平台开发方案\r 项目概述\r EasyJoy是一个多页面在线游戏平台，使用iframe嵌入各类游戏。网站将提供丰富的游戏分类，包括休闲、动作、射击、益智、棋牌和经典游戏等。平台采用Next.js框架结合无头CMS开发，确保网站在PC和移动端均有良好体验。\r 域名: easyjoygame.online\r 部署: Cloudflare\r 代码托管: GitHub\r 技术栈: Next.js + 无头CMS\r 语言: 英文\r 设计风格: 苹果典型色系",
+  "main": "next.config.js",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  }
+}

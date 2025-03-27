@@ -1,0 +1,23 @@
+名字 ：TrainPlanner
+简介：Make your own rail network!
+分类：Puzzle
+
+操作方法：
+TRAINPLANNER is an open-ended puzzle game where you have to create a safe, efficient and pretty rail network to let Miku deliver her leeks. It's important work!
+
+Please comment your finished tracks, I'd love to see 🩷 (or any bugs oops)
+
+CONTROLS:
+Left click to place, right click to delete
+
+PRESS R or use mouse wheel to rotate tracks
+
+
+Use 1/2/3/4 to switch between different modes, or press the on-screen buttons!
+
+
+Press T to toggle the UI off if you just wanna watch the trains go
+
+
+iframe代码
+<div class="iframe_placeholder" data-iframe="<iframe frameborder=&quot;0&quot; allowfullscreen=&quot;true&quot; scrolling=&quot;no&quot; allow=&quot;autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated; web-share&quot; allowtransparency=&quot;true&quot; webkitallowfullscreen=&quot;true&quot; mozallowfullscreen=&quot;true&quot; msallowfullscreen=&quot;true&quot; src=&quot;https://html-classic.itch.zone/html/13166169/index.html&quot; id=&quot;game_drop&quot;></iframe>"><button class="button load_iframe_btn"><svg stroke="currentColor" role="img" fill="none" viewBox="0 0 24 24" version="1.1" stroke-width="2" stroke-linecap="round" aria-hidden="" class="svgicon icon_play" stroke-linejoin="round" width="24" height="24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg> Run game</button></div>
