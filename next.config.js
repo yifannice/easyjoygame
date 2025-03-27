@@ -4,11 +4,10 @@
  */
 module.exports = {
   reactStrictMode: true,
-  images: {
-    domains: ['example.com'], // Add domains for external images if needed
-  },
   i18n: {
     locales: ['en'],
     defaultLocale: 'en',
   },
+  output: 'standalone', // 优化Cloudflare部署
+  poweredByHeader: false, // 移除X-Powered-By头
 } 

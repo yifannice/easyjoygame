@@ -7,6 +7,7 @@ import '../styles/globals.css';
 import Header from '../components/Header';
 
 export const metadata = {
+  metadataBase: new URL('https://easyjoygame.online'),
   title: {
     default: 'EasyJoy Games - Play Fun Games Online',
     template: '%s | EasyJoy Games'

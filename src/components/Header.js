@@ -7,13 +7,23 @@
  */
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { categories } from '../data/categories';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (
@@ -27,7 +37,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link href="/" className="text-text hover:text-primary transition-colors">
               Home
             </Link>
@@ -40,18 +50,23 @@ export default function Header() {
                 {category.name}
               </Link>
             ))}
-            <div className="relative ml-2">
+            <form onSubmit={handleSearch} className="relative ml-2">
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search games..."
                 className="bg-background rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary">
+              <button 
+                type="submit"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
-            </div>
+            </form>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -82,13 +97,15 @@ export default function Header() {
                 ))}
               </div>
             </div>
-            <div className="py-2">
+            <form onSubmit={handleSearch} className="py-2">
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search games..."
                 className="w-full bg-background rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
-            </div>
+            </form>
           </div>
         )}
       </div>

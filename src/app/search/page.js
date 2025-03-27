@@ -5,13 +5,14 @@
  */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import GameCard from '../../components/GameCard';
 import CategoryFilter from '../../components/CategoryFilter';
 import { searchGames } from '../../data/games';
 
-export default function SearchPage() {
+// 搜索内容组件
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -48,80 +49,44 @@ export default function SearchPage() {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Search Games</h1>
-      
-      {/* Search form */}
+    <div className="container mx-auto px-4 py-8">
       <form onSubmit={handleSearch} className="mb-8">
-        <div className="flex w-full max-w-xl mx-auto">
+        <div className="flex gap-2">
           <input
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search for games..."
-            className="flex-grow px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="Search games..."
+            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-primary text-white rounded-r-lg hover:bg-blue-600 transition-colors"
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
           >
             Search
           </button>
         </div>
       </form>
-      
-      {/* Search results */}
-      {query && (
-        <div>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">
-              {results.length > 0 
-                ? `Results for "${query}"`
-                : `No results for "${query}"`}
-            </h2>
-            <p className="text-gray-600">{results.length} games found</p>
-          </div>
-          
-          {results.length > 0 && (
-            <>
-              {/* Category filter */}
-              <CategoryFilter
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-              />
-              
-              {/* Results grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {results.map(game => (
-                  <GameCard key={game.id} game={game} />
-                ))}
-              </div>
-            </>
-          )}
-          
-          {results.length === 0 && (
-            <div className="text-center py-12 bg-white rounded-lg shadow">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3 className="text-xl font-bold text-gray-700 mb-2">No Games Found</h3>
-              <p className="text-gray-600 mb-4">Try different keywords or browse all games.</p>
-              <button 
-                onClick={() => router.push('/')}
-                className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-colors"
-              >
-                Browse All Games
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      
-      {!query && (
-        <div className="text-center py-12">
-          <p className="text-lg text-gray-600">Enter a search term to find games.</p>
-        </div>
-      )}
+
+      <CategoryFilter
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        {results.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
+      </div>
     </div>
+  );
+}
+
+// 主页面组件
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 } 

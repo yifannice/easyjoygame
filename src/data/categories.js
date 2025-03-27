@@ -47,68 +47,23 @@ export const categories = [
     slug: "classic", 
     icon: "🎮",
     description: "Timeless games that have stood the test of time"
-  },
-  {
-    id: "interactive-fiction",
-    name: "Interactive Fiction",
-    slug: "interactive-fiction",
-    icon: "📖",
-    description: "Story-driven games with multiple choices and outcomes"
-  },
-  {
-    id: "horror",
-    name: "Horror",
-    slug: "horror",
-    icon: "👻",
-    description: "Scary and suspenseful games that will keep you on edge"
-  },
-  {
-    id: "roguelike",
-    name: "Roguelike",
-    slug: "roguelike",
-    icon: "⚔️",
-    description: "Procedurally generated games with permadeath mechanics"
-  },
-  {
-    id: "strategy",
-    name: "Strategy",
-    slug: "strategy",
-    icon: "🎯",
-    description: "Games that require careful planning and tactical thinking"
-  },
-  {
-    id: "multiplayer",
-    name: "Multiplayer",
-    slug: "multiplayer",
-    icon: "👥",
-    description: "Games that can be played with multiple players"
-  },
-  {
-    id: "racing",
-    name: "Racing",
-    slug: "racing",
-    icon: "🏎️",
-    description: "Fast-paced racing games with various vehicles and tracks"
-  },
-  {
-    id: "sports",
-    name: "Sports",
-    slug: "sports",
-    icon: "⚽",
-    description: "Sports-themed games including billiards, soccer, and more"
   }
 ];
 
 /**
- * Utility function to get a category by slug
+ * Get category by ID
+ * @param {string} id - Category ID
+ * @returns {Object|null} Category object or null if not found
  */
-export function getCategoryBySlug(slug) {
-  return categories.find(category => category.slug === slug);
+export function getCategoryById(id) {
+  return categories.find(category => category.id === id) || null;
 }
 
 /**
- * Utility function to get a category by id
+ * Get category by slug
+ * @param {string} slug - Category slug
+ * @returns {Object|null} Category object or null if not found
  */
-export function getCategoryById(id) {
-  return categories.find(category => category.id === id);
+export function getCategoryBySlug(slug) {
+  return categories.find(category => category.slug === slug) || null;
 } 
