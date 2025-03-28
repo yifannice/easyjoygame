@@ -22,6 +22,7 @@ export default function GameCard({ game }) {
               src={game.thumbnail}
               alt={game.title}
               fill
+              priority={game.featured}
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="280px"
             />

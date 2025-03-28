@@ -244,54 +244,103 @@ export default function GamePage({ params }) {
 让我思考一下这个问题...
 
 首先需要理解当前的情况:
-1. 这是一个Next.js项目,使用App Router架构
-2. 已经部署在Cloudflare上,而且是静态页面部署
-3. 需要添加Google Analytics代码,而且要确保每个页面都能追踪
 
-对于Next.js项目添加GA,有几种方案:
-1. 直接在layout.js中添加script标签 - 这种方式虽然简单,但不够优雅,而且可能会影响性能
-2. 使用next/script组件 - 这是Next.js推荐的方式,可以更好地控制脚本加载
-3. 使用第三方库如next-analytics - 这种方式封装得更好,但可能有点重
+1. 这是一个 Next.js 项目,使用 App Router 架构
+2. 已经部署在 Cloudflare 上,而且是静态页面部署
+3. 需要添加 Google Analytics 代码,而且要确保每个页面都能追踪
 
-考虑到这是一个静态部署的项目,我觉得使用next/script是最合适的方案:
+对于 Next.js 项目添加 GA,有几种方案:
+
+1. 直接在 layout.js 中添加 script 标签 - 这种方式虽然简单,但不够优雅,而且可能会影响性能
+2. 使用 next/script 组件 - 这是 Next.js 推荐的方式,可以更好地控制脚本加载
+3. 使用第三方库如 next-analytics - 这种方式封装得更好,但可能有点重
+
+考虑到这是一个静态部署的项目,我觉得使用 next/script 是最合适的方案:
+
 - 不需要额外的依赖
 - 可以精确控制脚本加载时机
-- 符合Next.js最佳实践
+- 符合 Next.js 最佳实践
 - 对静态部署友好
 
 具体实现思路:
-1. 在根layout.js中添加GA代码
-2. 使用next/script的strategy="afterInteractive"确保不会阻塞页面加载
-3. 把GA ID作为环境变量配置,方便管理
 
-让我看看项目结构...需要先检查一下layout.js文件
+1. 在根 layout.js 中添加 GA 代码
+2. 使用 next/script 的 strategy="afterInteractive"确保不会阻塞页面加载
+3. 把 GA ID 作为环境变量配置,方便管理
 
-好的,我已经看到了layout.js的内容。现在我需要:
+让我看看项目结构...需要先检查一下 layout.js 文件
 
-1. 添加next/script的导入
-2. 在head部分添加GA代码
-3. 确保GA ID可以通过环境变量配置
+好的,我已经看到了 layout.js 的内容。现在我需要:
+
+1. 添加 next/script 的导入
+2. 在 head 部分添加 GA 代码
+3. 确保 GA ID 可以通过环境变量配置
 
 我注意到这个项目还没有配置环境变量,所以我们需要:
-1. 创建.env.local文件来存储GA ID
-2. 在layout.js中使用这个环境变量
 
-让我先创建环境变量文件,然后修改layout.js
+1. 创建.env.local 文件来存储 GA ID
+2. 在 layout.js 中使用这个环境变量
+
+让我先创建环境变量文件,然后修改 layout.js
 
 让我思考一下部署流程...
 
-1. 首先需要确认.gitignore是否包含.env.local
+1. 首先需要确认.gitignore 是否包含.env.local
+
 - 这是很重要的安全考虑
-- 不应该将包含敏感信息的.env文件提交到GitHub
+- 不应该将包含敏感信息的.env 文件提交到 GitHub
 
 2. 部署流程应该是:
-- 提交代码到GitHub
-- Cloudflare会自动检测到更新并重新部署
-- 需要在Cloudflare中设置环境变量
+
+- 提交代码到 GitHub
+- Cloudflare 会自动检测到更新并重新部署
+- 需要在 Cloudflare 中设置环境变量
 
 3. 需要检查:
-- .gitignore配置
-- 确保.env.local不会被提交
-- 提醒用户在Cloudflare中设置环境变量
 
-让我先检查一下.gitignore文件
+- .gitignore 配置
+- 确保.env.local 不会被提交
+- 提醒用户在 Cloudflare 中设置环境变量
+
+让我先检查一下.gitignore 文件
+
+export default function RootLayout({ children }) {
+return (
+<html lang="en" suppressHydrationWarning>
+<head>
+<Script
+src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+strategy="afterInteractive"
+as="script"
+/>
+<Script id="google-analytics" strategy="afterInteractive">
+{`            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+              page_path: window.location.pathname,
+              transport_type: 'beacon'
+            });
+         `}
+</Script>
+</head>
+<body className="bg-background min-h-screen flex flex-col">
+// ... existing code ...
+
+我已经修复了这些问题。让我解释一下所做的更改：
+添加了 as="script"属性：
+解决了预加载资源警告
+明确指定了资源类型
+有助于浏览器更好地优化资源加载
+改进了 GA 配置：
+添加了 page_path 配置，更好地追踪页面访问
+使用 transport_type: 'beacon'，这是 GA4 推荐的方式
+有助于处理第三方 Cookie 限制
+关于第三方 Cookie 警告：
+这是 Chrome 浏览器的正常提示
+GA4 已经针对这种情况进行了优化
+使用 transport_type: 'beacon'可以更好地处理这种情况
+现在您可以：
+重新运行开发服务器
+检查控制台，之前的错误应该已经消失
+使用 Google Analytics 实时报告验证数据是否正常收集
